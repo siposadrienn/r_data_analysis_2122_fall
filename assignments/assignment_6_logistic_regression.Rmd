@@ -1,6 +1,6 @@
 ---
-title: "Assignment 4: Logistic regression"
-author: "Marton Kovacs"
+title: "Assignment 6: Logistic regression"
+author: "Marton Kovacs / Zoltan Kekecs"
 output: html_document
 editor_options: 
   chunk_output_type: console

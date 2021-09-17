@@ -1,6 +1,6 @@
 ---
-title: "Assignment 6: "
-author: "Marton Kovacs"
+title: "Assignment 6: Factor Analysis"
+author: "Marton Kovacs / Zoltan Kekecs"
 output: html_document
 editor_options: 
   chunk_output_type: console

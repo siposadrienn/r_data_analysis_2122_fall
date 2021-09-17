@@ -1,6 +1,6 @@
 ---
 title: "Assignment 3: Model comparison"
-author: "Marton Kovacs"
+author: "Marton Kovacs/Zoltan Kekecs"
 output: html_document
 editor_options: 
   chunk_output_type: console
