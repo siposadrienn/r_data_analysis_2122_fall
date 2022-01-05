@@ -9,6 +9,8 @@ editor_options:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
+library(gganimate)
+
 ```
 
 
@@ -32,6 +34,66 @@ There is no dataset for this project. You have to simulate from scratch!
 ![Lightning](assignment_7_example/example_lightning.png)
 
 ```{r}
+#lightning without forks
+step_size = 500
+step_set = c(-0.1, 0, 0.1)
+lightning_rw = matrix(0, nrow = step_size, ncol = step_size)
+
+steps = sample(step_set, size = ((step_size + 1) * step_size)/2, replace = TRUE)
+lightning_rw[lower.tri(lightning_rw, diag = TRUE)] = steps
+
+#I could use mutate to avoid for loop but tidyverse < base R (sorry :D)
+for(j in 1:ncol(lightning_rw)){
+  lightning_rw[,j] = cumsum(lightning_rw[,j])
+}
+
+#selecting columns with forks
+forks = c(0, runif(step_size-1, 0, 1))
+
+lightning_rw_forking = lightning_rw[,forks <= 0.01]
+
+
+for(j in 2:ncol(lightning_rw_forking)){
+  
+  lightning_rw_forking[, j] = lightning_rw_forking[,j] + lightning_rw_forking[,1]
+  
+}
+
+lightning_rw_forking
 
 ```
+
+
+```{r}
+#reshape data to wide format
+df = lightning_rw_forking
+names = rep(1:ncol(df), each = step_size)
+df = as.data.frame(cbind(1:step_size, as.vector(df), names))
+colnames(df)
+
+#create line plot for each column in data frame
+ggplot(df, aes(V1, V2, group = names), colour = "black") +
+  geom_line(size = 1, aes(colour = names)) + 
+  coord_flip() + 
+  scale_x_reverse() +
+  theme(panel.background = element_rect(fill = "black"), panel.grid = NULL)
+
+
+```
+
+```{r}
+
+#create line plot for each column in data frame
+anim = ggplot(df, aes(V1, V2, group = names), colour = "black") +
+        geom_line(size = 1, aes(colour = names)) + 
+        coord_flip() + 
+        scale_x_reverse() +
+        theme(panel.background = element_rect(fill = "black"), panel.grid = NULL) +
+        transition_time(V1)+
+        shadow_mark()
+animate(anim)
+
+```
+
+
 
